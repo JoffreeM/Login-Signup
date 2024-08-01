@@ -9,6 +9,7 @@ class App : Application() {
 
     companion object {
         lateinit var appContext: Context
+        val navigation: MutableMap<String, Any> = mutableMapOf()
     }
     override fun onCreate() {
         super.onCreate()
