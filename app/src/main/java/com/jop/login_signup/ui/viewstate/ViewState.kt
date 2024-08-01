@@ -1,4 +1,3 @@
 package com.jop.login_signup.ui.viewstate
 
-class ViewState {
-}
+open class ViewState
