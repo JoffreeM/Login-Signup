@@ -36,6 +36,4 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
     protected fun getString(@StringRes resId: Int): String {
         return App.appContext.getString(resId)
     }
-
-
 }
