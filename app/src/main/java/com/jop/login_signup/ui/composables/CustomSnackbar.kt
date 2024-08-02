@@ -108,8 +108,8 @@ fun CustomSnackbar(
                             onClick = { snackbarHostState.currentSnackbarData?.dismiss() }
                         ) {
                             CustomText(
-                                modifier = Modifier.width(40.dp),
-                                fontSize = 14,
+                                modifier = Modifier.width(44.dp),
+                                fontSize = 12,
                                 textColor = Color.Gray,
                                 fontWeight = FontWeight.SemiBold,
                                 text = "Cerrar"
