@@ -34,7 +34,7 @@ class RegisterViewModel @Inject constructor(
     }
     fun updateSuccessClean(){
         val state: RegisterViewState = currentViewState()
-        updateViewState(LoginViewState())
+        updateViewState(RegisterViewState())
         //updateViewState(state.copy(isSuccess = false))
     }
     private fun register(){
