@@ -84,6 +84,7 @@ fun CustomInput(
                 focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface,
                 unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface,
                 disabledPlaceholderColor = MaterialTheme.colorScheme.onSurface,
+                errorContainerColor = MaterialTheme.colorScheme.errorContainer
             ),
             shape = RoundedCornerShape(0.dp),
             enabled = enabled,

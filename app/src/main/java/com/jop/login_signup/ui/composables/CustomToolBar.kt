@@ -21,7 +21,7 @@ fun CustomToolBar(
     navController: NavController,
     showToolBar: Boolean = true,
     title: String = "",
-    snackbarAlign: SnackbarAlign = SnackbarAlign.TOP_CENTER,
+    snackbarAlign: SnackbarAlign = SnackbarAlign.BOTTOM_CENTER,
     backgroundDesign: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {}
 ){

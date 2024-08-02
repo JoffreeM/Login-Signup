@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jop.login_signup.R
 import com.jop.login_signup.ui.composables.BackgroundDesign
@@ -44,13 +46,18 @@ import com.jop.login_signup.ui.composables.CustomToolBar
 import com.jop.login_signup.ui.navigation.Screens
 import com.jop.login_signup.ui.screens.authentication.composable.TitleAuth
 import com.jop.login_signup.ui.screens.authentication.composable.TitleButtom
+import com.jop.login_signup.ui.screens.authentication.login.view.event.LoginViewEvent
+import com.jop.login_signup.ui.screens.authentication.login.view.model.LoginViewModel
+import com.jop.login_signup.ui.screens.authentication.login.view.state.LoginViewState
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
 ){
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val state by viewModel.getState<LoginViewState>().collectAsState()
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
     CustomToolBar(
@@ -73,9 +80,9 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = R.string.label_email,
                 placeholder = R.string.placeholder_email,
-                value = "",
+                value = state.email,
                 onValueChange = {
-
+                    viewModel.onEvent(LoginViewEvent.OnEmail(it))
                 },
                 leadingIcon = {
                     Icon(painter = painterResource(id = R.drawable.ic_email), contentDescription = null)
@@ -87,14 +94,16 @@ fun LoginScreen(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }
                 ),
+                supportingText = state.emailError,
+                isError = state.emailError != null
             )
             CustomInput(
                 modifier = Modifier.fillMaxWidth(),
                 label = R.string.label_password,
                 placeholder = R.string.placeholder_password,
-                value = "",
+                value = state.password,
                 onValueChange = {
-
+                    viewModel.onEvent(LoginViewEvent.OnPassword(it))
                 },
                 leadingIcon = {
                     Icon(painter = painterResource(id = R.drawable.ic_password), contentDescription = null)
@@ -125,6 +134,8 @@ fun LoginScreen(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }
                 ),
+                supportingText = state.passwordError,
+                isError = state.passwordError != null
             )
             Row (
                 modifier = Modifier
@@ -137,13 +148,17 @@ fun LoginScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Checkbox(
-                        checked = false,
-                        onCheckedChange = {}
+                        checked = state.remember,
+                        onCheckedChange = {
+                            viewModel.onEvent(LoginViewEvent.OnRemember(it))
+                        }
                     )
                     CustomText(text = R.string.remember)
                 }
                 CustomText(
-                    modifier = Modifier.clickable {  },
+                    modifier = Modifier.clickable {
+                        viewModel.onEvent(LoginViewEvent.ForgotPassword)
+                    },
                     text = R.string.forgotten_password,
                     textColor = MaterialTheme.colorScheme.secondary,
                     fontWeight = FontWeight.Bold,
@@ -155,7 +170,9 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .height(46.dp)
                     .padding(horizontal = 10.dp),
-                onClick = {},
+                onClick = {
+                    viewModel.onEvent(LoginViewEvent.Login)
+                },
                 text = R.string.get_into
             )
             CustomSpace(height = 25)
