@@ -30,12 +30,18 @@ class LoginViewModel @Inject constructor(
             is LoginViewEvent.Login -> login()
         }
     }
+    fun updateSuccessClean(){
+        val state: LoginViewState = currentViewState()
+        updateViewState(LoginViewState())
+        //updateViewState(state.copy(isSuccess = false))
+    }
     private fun login(){
         if (formValid()){
             val state: LoginViewState = currentViewState()
-            showSnackbar(IcoSnackbar.CORRECT, getString(R.string.presset_btn_login))
+            showSnackbar(IcoSnackbar.CORRECT, getString(R.string.preset_btn_login))
+            updateViewState(state.copy(isSuccess = true))
         } else {
-            showSnackbar(IcoSnackbar.ERROR, getString(R.string.presset_btn_login))
+            showSnackbar(IcoSnackbar.ERROR, getString(R.string.preset_btn_login))
         }
     }
     private fun formValid(): Boolean{
@@ -57,7 +63,7 @@ class LoginViewModel @Inject constructor(
         }
         if (state.password.trim().isEmpty()) {
             isValid = false
-            passwordError = R.string.password_invalid
+            passwordError = R.string.enter_password_invalid
         } else {
             if (state.password.trim().passwordValid()){
                 passwordError = null

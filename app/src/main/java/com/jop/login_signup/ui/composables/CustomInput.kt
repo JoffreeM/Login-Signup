@@ -3,6 +3,9 @@ package com.jop.login_signup.ui.composables
 import androidx.annotation.StringRes
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -59,6 +63,7 @@ fun CustomInput(
             Text(
                 modifier = modifier/*.padding(start = 7.dp, bottom = 2.dp)*/,
                 text = stringResource(id = label),
+                fontFamily = FontFamily.Serif,
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontFamily = FontFamily.Default,
                     fontSize = labelFontSize,
@@ -93,6 +98,7 @@ fun CustomInput(
                 placeholder?.let {
                     Text(
                         text = stringResource(id = placeholder),
+                        fontFamily = FontFamily.Serif,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = MaterialTheme.colorScheme.onBackground
@@ -105,6 +111,7 @@ fun CustomInput(
                     Text(
                         fontSize = 10.sp,
                         text = stringResource(id = supportingText),
+                        fontFamily = FontFamily.Serif,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
                     )
@@ -129,7 +136,20 @@ fun CustomInput(
             singleLine = !isTextArea,
             maxLines = maxLines,
             interactionSource = interactionSource,
-            leadingIcon = leadingIcon
+            leadingIcon = {
+                leadingIcon?.let { ico ->
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                    ){
+                        ico()
+                        CustomSpace(width = 5)
+                        CustomDivider(
+                            height = 35,
+                            width = 1
+                        )
+                    }
+                }
+            }
         )
     }
 }

@@ -14,6 +14,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -27,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jop.login_signup.R
 import com.jop.login_signup.ui.composables.BackgroundDesign
@@ -36,15 +39,26 @@ import com.jop.login_signup.ui.composables.CustomSpace
 import com.jop.login_signup.ui.composables.CustomToolBar
 import com.jop.login_signup.ui.screens.authentication.composable.TitleAuth
 import com.jop.login_signup.ui.screens.authentication.composable.TitleButtom
+import com.jop.login_signup.ui.screens.authentication.register.view.event.RegisterViewEvent
+import com.jop.login_signup.ui.screens.authentication.register.view.model.RegisterViewModel
+import com.jop.login_signup.ui.screens.authentication.register.view.state.RegisterViewState
 
 @Composable
 fun RegisterScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: RegisterViewModel = hiltViewModel()
 ){
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val state by viewModel.getState<RegisterViewState>().collectAsState()
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
+    LaunchedEffect(key1 = state.isSuccess) {
+        if (state.isSuccess) {
+            viewModel.updateSuccessClean()
+            navController.popBackStack()
+        }
+    }
     CustomToolBar(
         navController = navController,
         showToolBar = false,
@@ -65,9 +79,9 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = R.string.label_email,
                 placeholder = R.string.placeholder_email,
-                value = "",
+                value = state.email,
                 onValueChange = {
-
+                    viewModel.onEvent(RegisterViewEvent.OnEmail(it))
                 },
                 leadingIcon = {
                     Icon(painter = painterResource(id = R.drawable.ic_email), contentDescription = null)
@@ -79,14 +93,16 @@ fun RegisterScreen(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }
                 ),
+                supportingText = state.emailError,
+                isError = state.emailError!=null
             )
             CustomInput(
                 modifier = Modifier.fillMaxWidth(),
                 label = R.string.label_phone,
                 placeholder = R.string.placeholder_phone,
-                value = "",
+                value = state.phone,
                 onValueChange = {
-
+                    viewModel.onEvent(RegisterViewEvent.OnPhone(it))
                 },
                 leadingIcon = {
                     Icon(painter = painterResource(id = R.drawable.ic_phone), contentDescription = null)
@@ -98,14 +114,16 @@ fun RegisterScreen(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }
                 ),
+                supportingText = state.phoneError,
+                isError = state.phoneError!=null
             )
             CustomInput(
                 modifier = Modifier.fillMaxWidth(),
                 label = R.string.label_password,
                 placeholder = R.string.placeholder_password,
-                value = "",
+                value = state.password,
                 onValueChange = {
-
+                    viewModel.onEvent(RegisterViewEvent.OnPassword(it))
                 },
                 leadingIcon = {
                     Icon(painter = painterResource(id = R.drawable.ic_password), contentDescription = null)
@@ -136,14 +154,16 @@ fun RegisterScreen(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }
                 ),
+                supportingText = state.passwordError,
+                isError = state.passwordError!=null
             )
             CustomInput(
                 modifier = Modifier.fillMaxWidth(),
                 label = R.string.label_password_confirmation,
                 placeholder = R.string.placeholder_password_confirmation,
-                value = "",
+                value = state.passwordConfirmation,
                 onValueChange = {
-
+                    viewModel.onEvent(RegisterViewEvent.OnPasswordConfirmation(it))
                 },
                 leadingIcon = {
                     Icon(painter = painterResource(id = R.drawable.ic_password), contentDescription = null)
@@ -174,13 +194,18 @@ fun RegisterScreen(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }
                 ),
+                supportingText = state.passwordConfirmationError,
+                isError = state.passwordConfirmationError!=null
             )
+            CustomSpace(height = 25)
             CustomButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(46.dp)
                     .padding(horizontal = 10.dp),
-                onClick = {},
+                onClick = {
+                    viewModel.onEvent(RegisterViewEvent.Register)
+                },
                 text = R.string.create_account
             )
             CustomSpace(height = 25)

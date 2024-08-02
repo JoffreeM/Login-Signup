@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,6 +61,12 @@ fun LoginScreen(
     val state by viewModel.getState<LoginViewState>().collectAsState()
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
+    LaunchedEffect(key1 = state.isSuccess) {
+        if (state.isSuccess) {
+            viewModel.updateSuccessClean()
+            navController.navigate(Screens.REGISTER)
+        }
+    }
     CustomToolBar(
         navController = navController,
         showToolBar = false,

@@ -21,11 +21,15 @@
     <string name="have_an_account">Ya tienes una cuenta</string>
     <string name="get_into">Ingresar</string>
     <string name="create_account">Crear cuenta</string>
-    <string name="send_reset_password">Envia a resetear la Contraseña</string>
-    <string name="presset_btn_login">Se presionó el boton Ingresar</string>
+    <string name="send_reset_password">Envía a resetear la Contraseña</string>
+    <string name="preset_btn_login">Se presionó el botón Ingresar</string>
     <string name="email_invalid">Correo inválido</string>
     <string name="password_invalid">Contraseña incorrecta</string>
     <string name="remember_active">Se activó Recordar</string>
     <string name="remember_not_active">Se desactivó Recordar</string>
+    <string name="pressed_btn_create_account">Se presionó el botón Crear cuenta</string>
+    <string name="enter_password_invalid">Ingresa una contraseña</string>
+    <string name="password_not_equal">Contraseña deben ser iguales</string>
+    <string name="number_invalid">Número inválido</string>
 
 </resources>

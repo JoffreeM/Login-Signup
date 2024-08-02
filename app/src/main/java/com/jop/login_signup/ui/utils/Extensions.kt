@@ -13,3 +13,9 @@ fun String.passwordValid(): Boolean {
     val matcher = passwordPattern.matcher(this)
     return matcher.matches()
 }
+
+fun String.isPhoneNumberValid(code: String = "591"): Boolean {
+    val phonePattern = Pattern.compile("^\\+$code ?\\d{8}$")
+    val matcher = phonePattern.matcher(this)
+    return matcher.matches()
+}
